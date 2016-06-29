@@ -7,8 +7,14 @@
 //
 
 #import "ViewController.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
+@property (weak, nonatomic) IBOutlet UILabel *tipsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
 
 @end
 
@@ -16,12 +22,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self bindTextField];
+}
+
+#pragma mark - Bind TextField
+
+- (void)bindTextField
+{
+//    @weakify(self)
+    [self.usernameTextField.rac_textSignal subscribeNext:^(id x) {
+//        @strongify(self)
+        NSLog(@"username = %@", x);
+    }];
+    
+    [[self.usernameTextField.rac_textSignal
+      filter:^BOOL(NSString *text) {
+          return text.length > 5;
+    }]
+     subscribeNext:^(id x) {
+        
+    }];
+    
+    [self.passwordTextfield.rac_textSignal subscribeNext:^(id x) {
+        NSLog(@"password = %@", x);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
