@@ -35,17 +35,84 @@
         NSLog(@"username = %@", x);
     }];
     
-    [[self.usernameTextField.rac_textSignal
-      filter:^BOOL(NSString *text) {
-          return text.length > 5;
+//    [[self.usernameTextField.rac_textSignal
+//      filter:^BOOL(NSString *text) {
+//          return text.length > 5;
+//    }]
+//     subscribeNext:^(id x) {
+//         NSLog(@"filter x = %@", x);
+//    }];
+    
+//    RACSignal *usernameSourceSignal = self.usernameTextField.rac_textSignal;
+//    RACSignal *filteredUsername = [usernameSourceSignal filter:^BOOL(id value) {
+//        NSString *text = value;
+//        return text.length > 5;
+//    }];
+//    
+//    [filteredUsername subscribeNext:^(id x) {
+//        NSLog(@"filter x = %@", x);
+//    }];
+    
+    [[[self.usernameTextField.rac_textSignal map:^id(NSString *text) {
+        return @(text.length);
     }]
+     filter:^BOOL(NSNumber *length) {
+         return [length integerValue] > 5;
+     }]
      subscribeNext:^(id x) {
-        
-    }];
+         NSLog(@"username x = %@", x);
+     }];
     
     [self.passwordTextfield.rac_textSignal subscribeNext:^(id x) {
         NSLog(@"password = %@", x);
     }];
+    
+    RACSignal *validUsernameSignal = [self.usernameTextField.rac_textSignal
+                                      map:^id(NSString *text) {
+                                          return @([self isValidUsername:text]);
+                                      }];
+    
+    RACSignal *validPasswordSignal = [self.passwordTextfield.rac_textSignal
+                                      map:^id(NSString *text) {
+                                          return @([self isValidPassword:text]);
+                                      }];
+    
+//    [[validPasswordSignal
+//      map:^id(NSNumber *passwordValid) {
+//        return [passwordValid boolValue] ? [UIColor clearColor] : [UIColor yellowColor];
+//    }]
+//      subscribeNext:^(UIColor *color) {
+//          self.passwordTextfield.backgroundColor = color;
+//      }];
+    
+    RAC(self.passwordTextfield, backgroundColor) = [validPasswordSignal map:^id(NSNumber *passwordValid) {
+        return [passwordValid boolValue] ? [UIColor clearColor] : [UIColor yellowColor];
+    }];
+    
+    RAC(self.usernameTextField, backgroundColor) = [validUsernameSignal map:^id(NSNumber *usernameValid) {
+        return [usernameValid boolValue] ? [UIColor clearColor] : [UIColor yellowColor];
+    }];
+    
+    
+    
+    RACSignal *signUpActiveSignal = [RACSignal combineLatest:@[validUsernameSignal,  validPasswordSignal]
+                                                      reduce:^id(NSNumber *usernameValid, NSNumber *passwordValid){
+                                                          return @([usernameValid boolValue] && [passwordValid boolValue]);
+                                                      }];
+    
+    [signUpActiveSignal subscribeNext:^(NSNumber *signupActive) {
+        self.loginButton.enabled = [signupActive boolValue];
+    }];
+    
+    
+}
+
+- (BOOL)isValidUsername:(NSString *)username {
+    return username.length > 5;
+}
+
+- (BOOL)isValidPassword:(NSString *)password {
+    return password.length > 5;
 }
 
 - (void)didReceiveMemoryWarning {
