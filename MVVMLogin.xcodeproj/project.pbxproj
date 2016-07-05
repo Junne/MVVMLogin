@@ -18,6 +18,7 @@
 		F568E1E31D236922005FD810 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F568E1E11D236922005FD810 /* LaunchScreen.storyboard */; };
 		F568E1EE1D236922005FD810 /* MVVMLoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F568E1ED1D236922005FD810 /* MVVMLoginTests.m */; };
 		F568E1F91D236922005FD810 /* MVVMLoginUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F568E1F81D236922005FD810 /* MVVMLoginUITests.m */; };
+		F57CD4DC1D2B45A90029BF88 /* LoginService.m in Sources */ = {isa = PBXBuildFile; fileRef = F57CD4DB1D2B45A90029BF88 /* LoginService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		F568E1F41D236922005FD810 /* MVVMLoginUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MVVMLoginUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F568E1F81D236922005FD810 /* MVVMLoginUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MVVMLoginUITests.m; sourceTree = "<group>"; };
 		F568E1FA1D236922005FD810 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F57CD4DA1D2B45A90029BF88 /* LoginService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginService.h; sourceTree = "<group>"; };
+		F57CD4DB1D2B45A90029BF88 /* LoginService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +148,8 @@
 				F568E1D71D236922005FD810 /* AppDelegate.m */,
 				F568E1D91D236922005FD810 /* ViewController.h */,
 				F568E1DA1D236922005FD810 /* ViewController.m */,
+				F57CD4DA1D2B45A90029BF88 /* LoginService.h */,
+				F57CD4DB1D2B45A90029BF88 /* LoginService.m */,
 				F568E1DC1D236922005FD810 /* Main.storyboard */,
 				F568E1DF1D236922005FD810 /* Assets.xcassets */,
 				F568E1E11D236922005FD810 /* LaunchScreen.storyboard */,
@@ -444,6 +449,7 @@
 				F568E1DB1D236922005FD810 /* ViewController.m in Sources */,
 				F568E1D81D236922005FD810 /* AppDelegate.m in Sources */,
 				F568E1D51D236922005FD810 /* main.m in Sources */,
+				F57CD4DC1D2B45A90029BF88 /* LoginService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

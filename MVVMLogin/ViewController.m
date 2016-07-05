@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "LoginService.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ViewController ()
@@ -15,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (weak, nonatomic) IBOutlet UILabel *tipsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+
+@property (strong, nonatomic) LoginService *loginService;
 
 @end
 
@@ -104,7 +107,42 @@
         self.loginButton.enabled = [signupActive boolValue];
     }];
     
+    [[[self.loginButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+     map:^id(id value) {
+         return [self loginSignal];
+     }]
+     subscribeNext:^(id x) {
+         NSLog(@"login result: %@", x);
+     }];
     
+//    [[[self.loginButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+//      flattenMap:^id(id x ) {
+//          return [self loginSignal];
+//      }]
+//     subscribeNext:^(NSNumber *login) {
+//         BOOL success = [login boolValue];
+//         NSLog(@"login result = %d", success);
+//     }];
+    
+//    [[[self.loginButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+//      flattenMap:^RACStream *(id value) {
+//          return [self loginSignal];
+//      }]
+//      subscribeNext:^(NSNumber *login) {
+//          BOOL success = [login boolValue];
+//          NSLog(@"login result = %d", success);
+//      }];
+    
+}
+
+- (RACSignal *)loginSignal {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [self.loginService loginWithUsername:self.usernameTextField.text password:self.passwordTextfield.text complete:^(BOOL success) {
+            [subscriber sendNext:@(success)];
+            [subscriber sendCompleted];
+        }];
+        return nil;
+    }];
 }
 
 - (BOOL)isValidUsername:(NSString *)username {
